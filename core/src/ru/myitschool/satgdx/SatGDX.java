@@ -47,7 +47,7 @@ public class SatGDX extends ApplicationAdapter {
 		for (int i = 0; i < imgMosquito.length; i++) {
 			imgMosquito[i] = new Texture("mosq"+i+".png");
 		}
-		imgBG = new Texture("bg.jpg");
+		imgBG = new Texture("bg.jpg"); // фон
 
 		// создаём объекты комаров
 		for (int i = 0; i < mosq.length; i++) {
