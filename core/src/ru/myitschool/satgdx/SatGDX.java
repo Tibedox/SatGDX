@@ -38,7 +38,7 @@ public class SatGDX extends ApplicationAdapter {
 
 		generateFont();
 
-		// создаём объекты звуков
+		// создаём объекты звуков d
 		for (int i = 0; i < sndMosq.length; i++) {
 			sndMosq[i] = Gdx.audio.newSound(Gdx.files.internal("komar"+i+".mp3"));
 		}
