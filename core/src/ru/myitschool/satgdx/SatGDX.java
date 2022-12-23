@@ -69,7 +69,7 @@ public class SatGDX extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		// касания экрана
+		// касания экрана и клики мыши
 		if(Gdx.input.justTouched()){
 			touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			camera.unproject(touch);
