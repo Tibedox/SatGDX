@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class SatGDX extends ApplicationAdapter {
-	public static final int SCR_WIDTH = 1920, SCR_HEIGHT = 1080;
+	public static final int SCR_WIDTH = 1280, SCR_HEIGHT = 720;
 
 	SpriteBatch batch;
 	OrthographicCamera camera;
@@ -25,9 +25,9 @@ public class SatGDX extends ApplicationAdapter {
 	Texture[] imgMosquito = new Texture[11];
 	Texture imgBG;
 
-	Mosquito[] mosq = new Mosquito[50];
+	Mosquito[] mosq = new Mosquito[5];
 	int frags;
-	long timeStart, timeEnd, timeCurrent;
+	long timeStart, timeCurrent;
 	
 	@Override
 	public void create () {
@@ -88,8 +88,7 @@ public class SatGDX extends ApplicationAdapter {
 		for (int i = 0; i < mosq.length; i++) {
 			mosq[i].move();
 		}
-		long t = TimeUtils.millis()-timeStart;
-		String timeStr = t/1000/60+":"+t/1000%60/10+t/1000%60%10;
+		timeCurrent = TimeUtils.millis()-timeStart;
 
 		// отрисовка всей графики
 		camera.update();
@@ -101,8 +100,12 @@ public class SatGDX extends ApplicationAdapter {
 					mosq[i].width, mosq[i].height, 0, 0, 500, 500, mosq[i].isFlip(), false);
 		}
 		font.draw(batch,"FRAGS: "+frags, 10, SCR_HEIGHT-10);
-		font.draw(batch, timeStr, SCR_WIDTH-180, SCR_HEIGHT-10);
+		font.draw(batch, timeToString(timeCurrent), SCR_WIDTH-180, SCR_HEIGHT-10);
 		batch.end();
+	}
+
+	String timeToString(long time){
+		return time/1000/60+":"+time/1000%60/10+time/1000%60%10;
 	}
 	
 	@Override
