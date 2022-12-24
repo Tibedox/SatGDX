@@ -2,6 +2,7 @@ package ru.myitschool.satgdx;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -30,6 +31,7 @@ public class SatGDX extends ApplicationAdapter {
 
 	Mosquito[] mosq = new Mosquito[5];
 	Player[] players = new Player[5];
+	Player player;
 	int frags;
 	long timeStart, timeCurrent;
 	boolean gameOver;
@@ -54,17 +56,13 @@ public class SatGDX extends ApplicationAdapter {
 		}
 		imgBG = new Texture("bg.jpg"); // фон
 
-		// создаём объекты комаров
-		for (int i = 0; i < mosq.length; i++) {
-			mosq[i] = new Mosquito();
-		}
-
 		// создаём игроков
 		for (int i = 0; i < players.length; i++) {
 			players[i] = new Player("Noname", 0);
 		}
+		player = new Player("Gamer", 0);
 
-		timeStart = TimeUtils.millis();
+		gameStart();
 	}
 
 	void generateFont(){
@@ -84,15 +82,18 @@ public class SatGDX extends ApplicationAdapter {
 		if(Gdx.input.justTouched()){
 			touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			camera.unproject(touch);
-			for (int i = mosq.length-1; i >= 0; i--) {
-				if(mosq[i].isAlive) {
-					if (mosq[i].hit(touch.x, touch.y)) {
-						frags++;
-						sndMosq[MathUtils.random(0,4)].play();
-						if(frags == mosq.length) {
-							gameOver();
+			if(gameOver) {
+				gameStart();
+			}
+			else {
+				for (int i = mosq.length - 1; i >= 0; i--) {
+					if (mosq[i].isAlive) {
+						if (mosq[i].hit(touch.x, touch.y)) {
+							frags++;
+							sndMosq[MathUtils.random(0, 4)].play();
+							if (frags == mosq.length) gameOver();
+							break;
 						}
-						break;
 					}
 				}
 			}
@@ -160,9 +161,34 @@ public class SatGDX extends ApplicationAdapter {
 
 	void gameOver(){
 		gameOver = true;
-		players[players.length-1].name = "Gamer";
+		enterPlayerName();
+		players[players.length-1].name = player.name;
 		players[players.length-1].time = timeCurrent;
 		sortTableOfRecords();
+	}
+
+	void gameStart(){
+		gameOver = false;
+		frags = 0;
+		// создаём объекты комаров
+		for (int i = 0; i < mosq.length; i++) {
+			mosq[i] = new Mosquito();
+		}
+		timeStart = TimeUtils.millis();
+	}
+
+	void enterPlayerName(){
+		Gdx.input.getTextInput(new Input.TextInputListener(){
+			@Override
+			public void input (String text) {
+				player.name = text;
+				gameStart();
+			}
+
+			@Override
+			public void canceled () {
+			}
+		}, "Введите имя игрока", player.name, "");
 	}
 	
 	@Override
