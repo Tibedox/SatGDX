@@ -3,6 +3,7 @@ package ru.myitschool.satgdx;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -165,6 +166,7 @@ public class SatGDX extends ApplicationAdapter {
 		players[players.length-1].name = player.name;
 		players[players.length-1].time = timeCurrent;
 		sortTableOfRecords();
+		saveTableOfRecords();
 	}
 
 	void gameStart(){
@@ -174,6 +176,7 @@ public class SatGDX extends ApplicationAdapter {
 		for (int i = 0; i < mosq.length; i++) {
 			mosq[i] = new Mosquito();
 		}
+		loadTableOfRecords();
 		timeStart = TimeUtils.millis();
 	}
 
@@ -189,6 +192,33 @@ public class SatGDX extends ApplicationAdapter {
 			public void canceled () {
 			}
 		}, "Введите имя игрока", player.name, "");
+	}
+
+	void saveTableOfRecords(){
+		try {
+			Preferences pref = Gdx.app.getPreferences("TableOfRecords");
+			for (int i = 0; i < players.length; i++) {
+				pref.putString("name"+i, players[i].name);
+				pref.putLong("time"+i, players[i].time);
+			}
+			pref.flush();
+		} catch (Exception e){
+		}
+	}
+
+	void loadTableOfRecords(){
+		try {
+			Preferences pref = Gdx.app.getPreferences("TableOfRecords");
+			for (int i = 0; i < players.length; i++) {
+				if(pref.contains("name"+i)) {
+					players[i].name = pref.getString("name"+i, "null");
+				}
+				if(pref.contains("time"+i)) {
+					players[i].time = pref.getLong("time"+i, 0);
+				}
+			}
+		} catch (Exception e){
+		}
 	}
 	
 	@Override
