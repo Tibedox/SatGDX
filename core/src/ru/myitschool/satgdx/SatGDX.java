@@ -58,7 +58,7 @@ public class SatGDX extends Game {
 
 	@Override
 	public void render () {
-
+		super.render();
 	}
 
 	@Override
