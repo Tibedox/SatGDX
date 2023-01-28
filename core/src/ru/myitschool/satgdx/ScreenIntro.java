@@ -14,9 +14,13 @@ public class ScreenIntro implements Screen {
 
     Texture imgBG;
 
+    TextButton btnPlay, btnExit;
+
     public ScreenIntro(SatGDX context) {
         c = context;
         imgBG = new Texture("bg.jpg"); // фон
+        btnPlay = new TextButton(c.font, "ИГРАТЬ", 800, 500);
+        btnExit = new TextButton(c.font, "ВЫХОД", 800, 400);
     }
 
     @Override
@@ -30,7 +34,12 @@ public class ScreenIntro implements Screen {
         if(Gdx.input.justTouched()){
             c.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             c.camera.unproject(c.touch);
-            c.setScreen(c.screenGame);
+            if(btnPlay.hit(c.touch.x, c.touch.y)) {
+                c.setScreen(c.screenGame);
+            }
+            if(btnExit.hit(c.touch.x, c.touch.y)) {
+                Gdx.app.exit();
+            }
         }
 
         // отрисовка всей графики
@@ -38,6 +47,8 @@ public class ScreenIntro implements Screen {
         c.batch.setProjectionMatrix(c.camera.combined);
         c.batch.begin();
         c.batch.draw(imgBG, 0, 0, SCR_WIDTH, SCR_HEIGHT);
+        c.font.draw(c.batch, btnPlay.text, btnPlay.x, btnPlay.y);
+        c.font.draw(c.batch, btnExit.text, btnExit.x, btnExit.y);
         c.batch.end();
     }
 
