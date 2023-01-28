@@ -35,7 +35,9 @@ public class SatGDX extends ApplicationAdapter {
 	Player player;
 	int frags;
 	long timeStart, timeCurrent;
-	boolean gameOver;
+	// состояние игры
+	public static final int PLAY_GAME = 0, ENTER_NAME = 1, SHOW_TABLE = 2;
+	int stateGame = PLAY_GAME;
 	
 	@Override
 	public void create () {
@@ -83,16 +85,16 @@ public class SatGDX extends ApplicationAdapter {
 		if(Gdx.input.justTouched()){
 			touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			camera.unproject(touch);
-			if(gameOver) {
+			if(stateGame == SHOW_TABLE) {
 				gameStart();
 			}
-			else {
+			if(stateGame == PLAY_GAME) {
 				for (int i = mosq.length - 1; i >= 0; i--) {
 					if (mosq[i].isAlive) {
 						if (mosq[i].hit(touch.x, touch.y)) {
 							frags++;
 							sndMosq[MathUtils.random(0, 4)].play();
-							if (frags == mosq.length) gameOver();
+							if (frags == mosq.length) enterPlayerName();
 							break;
 						}
 					}
@@ -104,7 +106,7 @@ public class SatGDX extends ApplicationAdapter {
 		for (int i = 0; i < mosq.length; i++) {
 			mosq[i].move();
 		}
-		if(!gameOver) {
+		if(stateGame == PLAY_GAME) {
 			timeCurrent = TimeUtils.millis() - timeStart;
 		}
 
@@ -119,7 +121,7 @@ public class SatGDX extends ApplicationAdapter {
 		}
 		font.draw(batch,"FRAGS: "+frags, 10, SCR_HEIGHT-10);
 		font.draw(batch, timeToString(timeCurrent), SCR_WIDTH-180, SCR_HEIGHT-10);
-		if(gameOver){
+		if(stateGame == SHOW_TABLE){
 			font.draw(batch, tableOfRecordsToString(), SCR_WIDTH/3f, SCR_HEIGHT/4f*3);
 		}
 		batch.end();
@@ -161,8 +163,7 @@ public class SatGDX extends ApplicationAdapter {
 	}
 
 	void gameOver(){
-		gameOver = true;
-		enterPlayerName();
+		stateGame = SHOW_TABLE;
 		players[players.length-1].name = player.name;
 		players[players.length-1].time = timeCurrent;
 		sortTableOfRecords();
@@ -170,7 +171,7 @@ public class SatGDX extends ApplicationAdapter {
 	}
 
 	void gameStart(){
-		gameOver = false;
+		stateGame = PLAY_GAME;
 		frags = 0;
 		// создаём объекты комаров
 		for (int i = 0; i < mosq.length; i++) {
@@ -181,11 +182,12 @@ public class SatGDX extends ApplicationAdapter {
 	}
 
 	void enterPlayerName(){
+		stateGame = ENTER_NAME;
 		Gdx.input.getTextInput(new Input.TextInputListener(){
 			@Override
 			public void input (String text) {
 				player.name = text;
-				gameStart();
+				gameOver();
 			}
 
 			@Override
