@@ -33,6 +33,8 @@ public class SatGDX extends ApplicationAdapter {
 	Mosquito[] mosq = new Mosquito[5];
 	Player[] players = new Player[5];
 	Player player;
+	InputKeyboard keyboard;
+
 	int frags;
 	long timeStart, timeCurrent;
 	// состояние игры
@@ -47,6 +49,7 @@ public class SatGDX extends ApplicationAdapter {
 		touch = new Vector3();
 
 		generateFont();
+		keyboard = new InputKeyboard(SCR_WIDTH, SCR_HEIGHT, 8);
 
 		// создаём объекты звуков
 		for (int i = 0; i < sndMosq.length; i++) {
@@ -94,10 +97,16 @@ public class SatGDX extends ApplicationAdapter {
 						if (mosq[i].hit(touch.x, touch.y)) {
 							frags++;
 							sndMosq[MathUtils.random(0, 4)].play();
-							if (frags == mosq.length) enterPlayerName();
+							if (frags == mosq.length) stateGame = ENTER_NAME;
 							break;
 						}
 					}
+				}
+			}
+			if(stateGame == ENTER_NAME){
+				if(keyboard.endOfEdit(touch.x, touch.y)){
+					player.name = keyboard.getText();
+					gameOver();
 				}
 			}
 		}
@@ -121,6 +130,9 @@ public class SatGDX extends ApplicationAdapter {
 		}
 		font.draw(batch,"FRAGS: "+frags, 10, SCR_HEIGHT-10);
 		font.draw(batch, timeToString(timeCurrent), SCR_WIDTH-180, SCR_HEIGHT-10);
+		if(stateGame == ENTER_NAME){
+			keyboard.draw(batch);
+		}
 		if(stateGame == SHOW_TABLE){
 			font.draw(batch, tableOfRecordsToString(), SCR_WIDTH/3f, SCR_HEIGHT/4f*3);
 		}
@@ -181,21 +193,6 @@ public class SatGDX extends ApplicationAdapter {
 		timeStart = TimeUtils.millis();
 	}
 
-	void enterPlayerName(){
-		stateGame = ENTER_NAME;
-		Gdx.input.getTextInput(new Input.TextInputListener(){
-			@Override
-			public void input (String text) {
-				player.name = text;
-				gameOver();
-			}
-
-			@Override
-			public void canceled () {
-			}
-		}, "Введите имя игрока", player.name, "");
-	}
-
 	void saveTableOfRecords(){
 		try {
 			Preferences pref = Gdx.app.getPreferences("TableOfRecords");
@@ -229,5 +226,6 @@ public class SatGDX extends ApplicationAdapter {
 		for (int i = 0; i < imgMosquito.length; i++) {
 			imgMosquito[i].dispose();
 		}
+		keyboard.dispose();
 	}
 }
