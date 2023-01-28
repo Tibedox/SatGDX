@@ -25,7 +25,7 @@ public class InputKeyboard {
 
     private String text = ""; // вводимый текст
     private static final String LETTERS_EN_CAPS = "1234567890-~QWERTYUIOP+?^ASDFGHJKL;'`ZXCVBNM<> |";
-    private static final String LETTERS_EN_LOW  = "!@#$%:&*()_~qwertyuiop[]^asdfghjkl:'`zxcvbnm,. |";
+    private static final String LETTERS_EN_LOW  = "!@#$%:&*()_~qwertyuiop<>^asdfghjkl:'`zxcvbnm,. |";
     private static final String LETTERS_RU_CAPS = "1234567890-~ЙЦУКЕНГШЩЗХЪ^ФЫВАПРОЛДЖЭ`ЯЧСМИТЬБЮЁ|";
     private static final String LETTERS_RU_LOW  = "!@#$%:&*()_~йцукенгшщзхъ^фывапролджэ`ячсмитьбюё|";
     private String letters = LETTERS_EN_CAPS;
