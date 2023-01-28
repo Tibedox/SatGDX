@@ -185,7 +185,7 @@ public class SatGDX extends ApplicationAdapter {
 	void gameStart(){
 		stateGame = PLAY_GAME;
 		frags = 0;
-		// создаём объекты комаров здесь
+		// создаём объекты комаров
 		for (int i = 0; i < mosq.length; i++) {
 			mosq[i] = new Mosquito();
 		}
