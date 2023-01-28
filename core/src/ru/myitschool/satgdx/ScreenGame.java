@@ -48,13 +48,11 @@ public class ScreenGame implements Screen {
             players[i] = new Player("Noname", 0);
         }
         player = new Player("Gamer", 0);
-
-        gameStart();
     }
 
     @Override
     public void show() {
-
+        gameStart();
     }
 
     @Override

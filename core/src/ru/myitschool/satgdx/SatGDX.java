@@ -39,9 +39,9 @@ public class SatGDX extends Game {
 
 		generateFont();
 
-		screenIntro = new ScreenIntro();
+		screenIntro = new ScreenIntro(this);
 		screenGame = new ScreenGame(this);
-		setScreen(screenGame);
+		setScreen(screenIntro);
 	}
 
 	void generateFont(){
