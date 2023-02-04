@@ -87,9 +87,12 @@ public class ScreenGame implements Screen {
                     gameOver();
                 }
             }
-            if(btnBack.hit(c.touch.x, c.touch.y) || Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
+            if(btnBack.hit(c.touch.x, c.touch.y)){
                 c.setScreen(c.screenIntro);
             }
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            c.setScreen(c.screenIntro);
         }
 
         // игровые события
