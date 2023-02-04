@@ -6,8 +6,6 @@ import static ru.myitschool.satgdx.SatGDX.SCR_WIDTH;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.TimeUtils;
 
 public class ScreenIntro implements Screen {
     SatGDX c;
@@ -30,7 +28,7 @@ public class ScreenIntro implements Screen {
 
     @Override
     public void render(float delta) {
-// касания экрана и клики мышки
+    // касания экрана и клики мыши
         if(Gdx.input.justTouched()){
             c.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             c.camera.unproject(c.touch);
