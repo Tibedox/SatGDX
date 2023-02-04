@@ -15,10 +15,13 @@ public class SatGDX extends Game {
 	SpriteBatch batch;
 	OrthographicCamera camera;
 	Vector3 touch;
-	BitmapFont font, fontRed;
+	BitmapFont font, fontRed, fontLarge;
 
 	ScreenIntro screenIntro;
 	ScreenGame screenGame;
+	ScreenSettings screenSettings;
+
+	boolean soundOn = true;
 
 	@Override
 	public void create () {
@@ -31,6 +34,7 @@ public class SatGDX extends Game {
 
 		screenIntro = new ScreenIntro(this);
 		screenGame = new ScreenGame(this);
+		screenSettings = new ScreenSettings(this);
 		setScreen(screenIntro);
 	}
 
@@ -45,6 +49,9 @@ public class SatGDX extends Game {
 		font = generator.generateFont(parameter);
 		parameter.color = Color.RED;
 		fontRed = generator.generateFont(parameter);
+		parameter.color = new Color().set(1, 0.9f, 0.4f, 1);
+		parameter.size = 80;
+		fontLarge = generator.generateFont(parameter);
 		generator.dispose();
 	}
 

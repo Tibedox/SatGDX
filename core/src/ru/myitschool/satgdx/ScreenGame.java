@@ -74,7 +74,9 @@ public class ScreenGame implements Screen {
                     if (mosq[i].isAlive) {
                         if (mosq[i].hit(c.touch.x, c.touch.y)) {
                             frags++;
-                            sndMosq[MathUtils.random(0, 4)].play();
+                            if(c.soundOn) {
+                                sndMosq[MathUtils.random(0, 4)].play();
+                            }
                             if (frags == mosq.length) stateGame = ENTER_NAME;
                             break;
                         }
