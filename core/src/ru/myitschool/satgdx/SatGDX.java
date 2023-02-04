@@ -15,7 +15,7 @@ public class SatGDX extends Game {
 	SpriteBatch batch;
 	OrthographicCamera camera;
 	Vector3 touch;
-	BitmapFont font;
+	BitmapFont font, fontRed;
 
 	ScreenIntro screenIntro;
 	ScreenGame screenGame;
@@ -43,6 +43,8 @@ public class SatGDX extends Game {
 		parameter.borderWidth = 2;
 		parameter.characters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.;:,{}\"´`'<>";
 		font = generator.generateFont(parameter);
+		parameter.color = Color.RED;
+		fontRed = generator.generateFont(parameter);
 		generator.dispose();
 	}
 

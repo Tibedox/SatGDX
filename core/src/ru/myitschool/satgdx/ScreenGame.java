@@ -3,6 +3,7 @@ package ru.myitschool.satgdx;
 import static ru.myitschool.satgdx.SatGDX.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
@@ -28,9 +29,12 @@ public class ScreenGame implements Screen {
     public static final int PLAY_GAME = 0, ENTER_NAME = 1, SHOW_TABLE = 2;
     int stateGame = PLAY_GAME;
 
+    TextButton btnBack;
+
     public ScreenGame(SatGDX context){
         c = context;
         keyboard = new InputKeyboard(SCR_WIDTH, SCR_HEIGHT, 8);
+        btnBack = new TextButton(c.fontRed, "X", SCR_WIDTH-60, SCR_HEIGHT-10);
 
         // создаём объекты звуков
         for (int i = 0; i < sndMosq.length; i++) {
@@ -52,6 +56,7 @@ public class ScreenGame implements Screen {
 
     @Override
     public void show() {
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
         gameStart();
     }
 
@@ -82,6 +87,9 @@ public class ScreenGame implements Screen {
                     gameOver();
                 }
             }
+            if(btnBack.hit(c.touch.x, c.touch.y) || Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
+                c.setScreen(c.screenIntro);
+            }
         }
 
         // игровые события
@@ -109,6 +117,7 @@ public class ScreenGame implements Screen {
         if(stateGame == SHOW_TABLE){
             c.font.draw(c.batch, tableOfRecordsToString(), SCR_WIDTH/3f, SCR_HEIGHT/4f*3);
         }
+        btnBack.font.draw(c.batch, btnBack.text, btnBack.x, btnBack.y);
         c.batch.end();
     }
 
@@ -211,7 +220,7 @@ public class ScreenGame implements Screen {
 
     @Override
     public void hide() {
-
+        Gdx.input.setCatchKey(Input.Keys.BACK, false);
     }
 
     @Override
